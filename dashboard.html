@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RecoverMood - Admin Dashboard</title>
+    <link rel="icon" type="image/svg+xml" href="assets/images/logo-icon.svg" />
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            200: '#bfdbfe',
+                            300: '#93c5fd',
+                            400: '#60a5fa',
+                            500: '#2563eb',
+                            600: '#1d4ed8',
+                            700: '#1e40af',
+                            800: '#1e3a8a',
+                            900: '#172554',
+                        },
+                        accent: {
+                            teal: '#06b6d4',
+                            emerald: '#10b981',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- FontAwesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Toastr -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    </style>
+</head>
+<body class="bg-slate-50 min-h-screen text-slate-800 flex">
+
+    <!-- Left Sidebar -->
+    <aside class="w-64 bg-slate-900 text-white flex-shrink-0 hidden md:flex flex-col justify-between p-4 border-r border-slate-800">
+        <div>
+            <!-- Brand Logo -->
+            <div class="flex items-center gap-3 px-3 py-4 mb-6">
+                <img src="assets/images/logo-icon.svg" alt="RecoverMood" class="w-10 h-10 object-contain" />
+                <div>
+                    <span class="text-lg font-extrabold tracking-tight text-white block">Recover<span class="text-cyan-400">Mood</span></span>
+                    <span class="text-[10px] text-slate-400 uppercase tracking-widest font-semibold">Billing & Recovery</span>
+                </div>
+            </div>
+
+            <!-- Nav Links -->
+            <nav class="space-y-1.5">
+                <a href="dashboard.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl bg-brand-600 text-white font-medium text-sm transition">
+                    <i class="fa-solid fa-gauge-high w-5 text-center"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="#" onclick="toastr.info('Navigating to Challans & Invoices'); return false;" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800/60 font-medium text-sm transition">
+                    <i class="fa-solid fa-file-invoice-dollar w-5 text-center"></i>
+                    <span>Fee Challans</span>
+                </a>
+                <a href="#" onclick="toastr.info('Navigating to Collections & Receipts'); return false;" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800/60 font-medium text-sm transition">
+                    <i class="fa-solid fa-hand-holding-dollar w-5 text-center"></i>
+                    <span>Collections</span>
+                </a>
+                <a href="#" onclick="toastr.info('Navigating to Student & Account Directory'); return false;" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800/60 font-medium text-sm transition">
+                    <i class="fa-solid fa-users w-5 text-center"></i>
+                    <span>Accounts / Students</span>
+                </a>
+                <a href="#" onclick="toastr.info('Navigating to Recovery Defaulters'); return false;" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800/60 font-medium text-sm transition">
+                    <i class="fa-solid fa-triangle-exclamation w-5 text-center text-amber-400"></i>
+                    <span>Defaulters List</span>
+                    <span class="ml-auto text-[11px] bg-amber-500/20 text-amber-300 px-2 py-0.5 rounded-full font-bold">142</span>
+                </a>
+                <a href="#" onclick="toastr.info('Navigating to Reports'); return false;" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800/60 font-medium text-sm transition">
+                    <i class="fa-solid fa-chart-pie w-5 text-center"></i>
+                    <span>Reports & Audits</span>
+                </a>
+                <a href="#" onclick="toastr.info('Navigating to Settings'); return false;" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800/60 font-medium text-sm transition">
+                    <i class="fa-solid fa-sliders w-5 text-center"></i>
+                    <span>Settings</span>
+                </a>
+            </nav>
+        </div>
+
+        <!-- User info / Logout -->
+        <div class="border-t border-slate-800 pt-4 px-2">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 rounded-full bg-brand-500/20 border border-brand-500/40 flex items-center justify-center text-brand-300 font-bold text-sm">
+                        AD
+                    </div>
+                    <div>
+                        <div class="text-xs font-bold text-white">Administrator</div>
+                        <div class="text-[10px] text-slate-400">admin@recovermood.com</div>
+                    </div>
+                </div>
+                <a href="index.html" title="Sign Out" class="text-slate-400 hover:text-red-400 transition p-2">
+                    <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                </a>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <div class="flex-1 flex flex-col min-w-0 overflow-y-auto">
+        
+        <!-- Top Navbar -->
+        <header class="h-16 bg-white border-b border-slate-200 px-6 flex items-center justify-between sticky top-0 z-20">
+            <div class="flex items-center gap-4">
+                <button class="md:hidden text-slate-600 hover:text-slate-900">
+                    <i class="fa-solid fa-bars text-lg"></i>
+                </button>
+                <div class="relative w-64 md:w-80">
+                    <input type="text" placeholder="Search challan #, student, or roll no..." 
+                           class="w-full bg-slate-100 border border-slate-200 rounded-xl py-2 pl-9 pr-4 text-xs font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-3">
+                <button onclick="toastr.info('WhatsApp reminder dispatch queued for 142 overdue accounts!');" 
+                        class="hidden sm:inline-flex items-center gap-2 px-3.5 py-2 bg-emerald-50 text-emerald-700 hover:bg-emerald-100 border border-emerald-200 rounded-xl text-xs font-semibold transition">
+                    <i class="fa-brands fa-whatsapp text-sm"></i>
+                    <span>Send Overdue Reminders</span>
+                </button>
+
+                <button onclick="toastr.success('New Challan batch generated!');" 
+                        class="inline-flex items-center gap-2 px-3.5 py-2 bg-brand-600 hover:bg-brand-700 text-white rounded-xl text-xs font-semibold shadow-sm shadow-brand-500/30 transition">
+                    <i class="fa-solid fa-plus"></i>
+                    <span>Generate Challan</span>
+                </button>
+
+                <div class="w-px h-6 bg-slate-200 mx-1"></div>
+
+                <a href="index.html" class="text-xs font-semibold text-slate-500 hover:text-red-600 flex items-center gap-1.5 transition">
+                    <i class="fa-solid fa-power-off"></i>
+                    <span>Logout</span>
+                </a>
+            </div>
+        </header>
+
+        <!-- Dashboard Body -->
+        <main class="p-6 md:p-8 space-y-6 max-w-7xl w-full mx-auto">
+            
+            <!-- Greeting & Quick Status -->
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                <div>
+                    <h1 class="text-2xl font-extrabold text-slate-900 tracking-tight">Recovery & Fee Overview</h1>
+                    <p class="text-xs text-slate-500 mt-1">Real-time status for the current academic billing cycle (November 2026)</p>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 text-xs font-semibold">
+                        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                        Auto-Sync Active
+                    </span>
+                    <button class="px-3 py-1.5 border border-slate-200 hover:bg-slate-100 rounded-xl text-xs font-medium text-slate-600 transition" onclick="toastr.success('Data refreshed from bank portal');">
+                        <i class="fa-solid fa-arrows-rotate mr-1"></i> Refresh
+                    </button>
+                </div>
+            </div>
+
+            <!-- Metric Summary Cards -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                
+                <!-- Card 1: Total Demand -->
+                <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm hover:shadow-md transition">
+                    <div class="flex items-center justify-between text-slate-500 text-xs font-semibold uppercase tracking-wider mb-2">
+                        <span>Total Dues Demand</span>
+                        <div class="w-8 h-8 rounded-xl bg-blue-50 text-brand-600 flex items-center justify-center">
+                            <i class="fa-solid fa-receipt text-sm"></i>
+                        </div>
+                    </div>
+                    <div class="text-2xl font-extrabold text-slate-900">PKR 4,850,000</div>
+                    <div class="mt-2 text-xs text-slate-500 flex items-center gap-1.5">
+                        <span class="text-brand-600 font-semibold">1,250</span> challans issued
+                    </div>
+                </div>
+
+                <!-- Card 2: Recovered Amount -->
+                <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm hover:shadow-md transition">
+                    <div class="flex items-center justify-between text-slate-500 text-xs font-semibold uppercase tracking-wider mb-2">
+                        <span>Total Recovered</span>
+                        <div class="w-8 h-8 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
+                            <i class="fa-solid fa-circle-check text-sm"></i>
+                        </div>
+                    </div>
+                    <div class="text-2xl font-extrabold text-emerald-600">PKR 3,920,000</div>
+                    <div class="mt-2 text-xs text-emerald-700 flex items-center gap-1.5">
+                        <i class="fa-solid fa-arrow-trend-up"></i>
+                        <span class="font-bold">80.8%</span> recovery rate achieved
+                    </div>
+                </div>
+
+                <!-- Card 3: Pending / Overdue -->
+                <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm hover:shadow-md transition">
+                    <div class="flex items-center justify-between text-slate-500 text-xs font-semibold uppercase tracking-wider mb-2">
+                        <span>Outstanding Balance</span>
+                        <div class="w-8 h-8 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center">
+                            <i class="fa-solid fa-clock text-sm"></i>
+                        </div>
+                    </div>
+                    <div class="text-2xl font-extrabold text-rose-600">PKR 930,000</div>
+                    <div class="mt-2 text-xs text-rose-600 flex items-center gap-1.5">
+                        <i class="fa-solid fa-circle-exclamation"></i>
+                        <span class="font-bold">142</span> accounts past due date
+                    </div>
+                </div>
+
+                <!-- Card 4: Today's Collections -->
+                <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm hover:shadow-md transition">
+                    <div class="flex items-center justify-between text-slate-500 text-xs font-semibold uppercase tracking-wider mb-2">
+                        <span>Collected Today</span>
+                        <div class="w-8 h-8 rounded-xl bg-cyan-50 text-cyan-600 flex items-center justify-center">
+                            <i class="fa-solid fa-money-bill-wave text-sm"></i>
+                        </div>
+                    </div>
+                    <div class="text-2xl font-extrabold text-slate-900">PKR 184,500</div>
+                    <div class="mt-2 text-xs text-slate-500 flex items-center gap-1.5">
+                        <span class="text-cyan-700 font-semibold">28 transactions</span> reconciled
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Charts & Analytics Row -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Main Recovery Trend Chart (2 cols) -->
+                <div class="lg:col-span-2 bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm">
+                    <div class="flex items-center justify-between mb-4">
+                        <div>
+                            <h2 class="text-base font-bold text-slate-900">Monthly Recovery Performance</h2>
+                            <p class="text-xs text-slate-500">Collected dues vs Billing Demand across the last 6 months</p>
+                        </div>
+                        <div class="flex items-center gap-2 text-xs">
+                            <span class="inline-flex items-center gap-1.5 font-medium text-slate-600">
+                                <span class="w-3 h-3 rounded-full bg-brand-500"></span> Recovered
+                            </span>
+                            <span class="inline-flex items-center gap-1.5 font-medium text-slate-600">
+                                <span class="w-3 h-3 rounded-full bg-slate-300"></span> Total Billed
+                            </span>
+                        </div>
+                    </div>
+                    <div class="h-64">
+                        <canvas id="recoveryChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Recovery Channel Breakdown (1 col) -->
+                <div class="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <h2 class="text-base font-bold text-slate-900">Collection Channels</h2>
+                        <p class="text-xs text-slate-500 mb-4">Payment gateway & counter breakdown</p>
+                        <div class="h-44 relative">
+                            <canvas id="channelChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="space-y-2 mt-4 pt-4 border-t border-slate-100 text-xs">
+                        <div class="flex justify-between items-center">
+                            <span class="text-slate-600 flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full bg-blue-600"></span> 1Link / Kuickpay / 1Bill</span>
+                            <span class="font-bold text-slate-800">55%</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-slate-600 flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> Bank Branch Deposit</span>
+                            <span class="font-bold text-slate-800">28%</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-slate-600 flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full bg-cyan-400"></span> Counter / Cash</span>
+                            <span class="font-bold text-slate-800">17%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Challans & Recovery Table -->
+            <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm overflow-hidden">
+                <div class="p-6 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                    <div>
+                        <h2 class="text-base font-bold text-slate-900">Recent Fee Challans & Collections</h2>
+                        <p class="text-xs text-slate-500">Live feed of student dues, receipt generation, and status</p>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button onclick="toastr.info('Exporting report as Excel spreadsheet...');" class="px-3 py-1.5 border border-slate-200 hover:bg-slate-50 rounded-xl text-xs font-semibold text-slate-700 flex items-center gap-1.5 transition">
+                            <i class="fa-solid fa-file-excel text-emerald-600"></i> Export Excel
+                        </button>
+                    </div>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse text-xs">
+                        <thead class="bg-slate-50 border-b border-slate-200/80 text-slate-500 uppercase tracking-wider font-semibold">
+                            <tr>
+                                <th class="py-3.5 px-6">Challan #</th>
+                                <th class="py-3.5 px-6">Student / Account</th>
+                                <th class="py-3.5 px-6">Class / Batch</th>
+                                <th class="py-3.5 px-6">Amount</th>
+                                <th class="py-3.5 px-6">Due Date</th>
+                                <th class="py-3.5 px-6">Status</th>
+                                <th class="py-3.5 px-6 text-right">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100 font-medium text-slate-700">
+                            <tr class="hover:bg-slate-50/70 transition">
+                                <td class="py-3.5 px-6 font-mono font-bold text-brand-600">#CH-2026-9041</td>
+                                <td class="py-3.5 px-6">
+                                    <div class="font-bold text-slate-900">Muhammad Hamza</div>
+                                    <div class="text-[11px] text-slate-400">Roll: 21-CS-104</div>
+                                </td>
+                                <td class="py-3.5 px-6">BSCS - Sem 6</td>
+                                <td class="py-3.5 px-6 font-bold text-slate-900">PKR 45,000</td>
+                                <td class="py-3.5 px-6 text-slate-500">10 Nov 2026</td>
+                                <td class="py-3.5 px-6">
+                                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 font-semibold text-[11px] border border-emerald-200">
+                                        <i class="fa-solid fa-check text-[10px]"></i> Paid (1Bill)
+                                    </span>
+                                </td>
+                                <td class="py-3.5 px-6 text-right">
+                                    <button onclick="toastr.success('Receipt downloaded!');" class="text-brand-600 hover:text-brand-700 font-semibold p-1.5">Print Receipt</button>
+                                </td>
+                            </tr>
+                            <tr class="hover:bg-slate-50/70 transition">
+                                <td class="py-3.5 px-6 font-mono font-bold text-brand-600">#CH-2026-9042</td>
+                                <td class="py-3.5 px-6">
+                                    <div class="font-bold text-slate-900">Ayesha Siddiqua</div>
+                                    <div class="text-[11px] text-slate-400">Roll: 22-EE-048</div>
+                                </td>
+                                <td class="py-3.5 px-6">BSEE - Sem 4</td>
+                                <td class="py-3.5 px-6 font-bold text-slate-900">PKR 38,500</td>
+                                <td class="py-3.5 px-6 text-rose-600 font-semibold">01 Nov 2026</td>
+                                <td class="py-3.5 px-6">
+                                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-rose-50 text-rose-700 font-semibold text-[11px] border border-rose-200">
+                                        <i class="fa-solid fa-clock text-[10px]"></i> Overdue
+                                    </span>
+                                </td>
+                                <td class="py-3.5 px-6 text-right">
+                                    <button onclick="toastr.success('WhatsApp payment reminder dispatched to parent!');" class="text-emerald-600 hover:text-emerald-700 font-semibold p-1.5">
+                                        <i class="fa-brands fa-whatsapp mr-1"></i> Remind
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr class="hover:bg-slate-50/70 transition">
+                                <td class="py-3.5 px-6 font-mono font-bold text-brand-600">#CH-2026-9043</td>
+                                <td class="py-3.5 px-6">
+                                    <div class="font-bold text-slate-900">Zain Ali Khan</div>
+                                    <div class="text-[11px] text-slate-400">Roll: 23-BBA-019</div>
+                                </td>
+                                <td class="py-3.5 px-6">BBA - Sem 2</td>
+                                <td class="py-3.5 px-6 font-bold text-slate-900">PKR 52,000</td>
+                                <td class="py-3.5 px-6 text-slate-500">12 Nov 2026</td>
+                                <td class="py-3.5 px-6">
+                                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-50 text-amber-700 font-semibold text-[11px] border border-amber-200">
+                                        <i class="fa-solid fa-hourglass-half text-[10px]"></i> Partial (25k)
+                                    </span>
+                                </td>
+                                <td class="py-3.5 px-6 text-right">
+                                    <button onclick="toastr.info('Opening payment modal...');" class="text-brand-600 hover:text-brand-700 font-semibold p-1.5">Record Cash</button>
+                                </td>
+                            </tr>
+                            <tr class="hover:bg-slate-50/70 transition">
+                                <td class="py-3.5 px-6 font-mono font-bold text-brand-600">#CH-2026-9044</td>
+                                <td class="py-3.5 px-6">
+                                    <div class="font-bold text-slate-900">Fatima Noor</div>
+                                    <div class="text-[11px] text-slate-400">Roll: 20-CS-088</div>
+                                </td>
+                                <td class="py-3.5 px-6">BSCS - Sem 8</td>
+                                <td class="py-3.5 px-6 font-bold text-slate-900">PKR 41,000</td>
+                                <td class="py-3.5 px-6 text-slate-500">15 Nov 2026</td>
+                                <td class="py-3.5 px-6">
+                                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 font-semibold text-[11px] border border-emerald-200">
+                                        <i class="fa-solid fa-check text-[10px]"></i> Paid (Bank)
+                                    </span>
+                                </td>
+                                <td class="py-3.5 px-6 text-right">
+                                    <button onclick="toastr.success('Receipt downloaded!');" class="text-brand-600 hover:text-brand-700 font-semibold p-1.5">Print Receipt</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Chart Configuration Script -->
+    <script>
+        toastr.options = { closeButton: true, progressBar: true, positionClass: "toast-top-right", timeOut: 3000 };
+
+        // Main Bar + Line Chart
+        const ctxRecovery = document.getElementById('recoveryChart').getContext('2d');
+        new Chart(ctxRecovery, {
+            type: 'bar',
+            data: {
+                labels: ['Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov (Current)'],
+                datasets: [
+                    {
+                        label: 'Recovered / Collected',
+                        data: [3.8, 4.1, 4.4, 4.2, 4.6, 3.92],
+                        backgroundColor: '#2563EB',
+                        borderRadius: 8
+                    },
+                    {
+                        label: 'Total Billed (PKR M)',
+                        data: [4.2, 4.5, 4.8, 4.6, 4.9, 4.85],
+                        backgroundColor: '#E2E8F0',
+                        borderRadius: 8
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: { callback: (val) => val + 'M' }
+                    },
+                    x: { grid: { display: false } }
+                }
+            }
+        });
+
+        // Donut Chart
+        const ctxChannel = document.getElementById('channelChart').getContext('2d');
+        new Chart(ctxChannel, {
+            type: 'doughnut',
+            data: {
+                labels: ['1Link / Kuickpay', 'Bank Branches', 'Counter Cash'],
+                datasets: [{
+                    data: [55, 28, 17],
+                    backgroundColor: ['#2563EB', '#10B981', '#06B6D4'],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                cutout: '72%'
+            }
+        });
+    </script>
+</body>
+</html>

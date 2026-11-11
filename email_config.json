@@ -1,0 +1,18 @@
+﻿{
+    "enabled":  true,
+    "backup_interval_hours":  6,
+    "recipient":  "sonycafelahore@gmail.com",
+    "sender_email":  "sonycafelahore@gmail.com",
+    "smtp_server":  "smtp.gmail.com",
+    "smtp_port":  587,
+    "app_password":  "",
+    "email_enabled":  true,
+    "cloud_sync_enabled":  false,
+    "cloud_folder":  "",
+    "max_local_backups_to_keep":  30,
+    "last_backup_time":  "2026-11-11T16:07:07+05:00",
+    "last_backup_file":  "SonyBox_Backup_20261111_160704.zip",
+    "last_backup_size_kb":  682.58,
+    "last_email_sent":  false,
+    "last_cloud_synced":  false
+}

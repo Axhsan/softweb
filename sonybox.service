@@ -1,0 +1,18 @@
+[Unit]
+Description=SonyBox ISP Management Service on Port 22558
+After=network.target
+
+[Service]
+Type=simple
+User=www
+WorkingDirectory=/www/wwwroot/sonybox
+# Agar Node.js use karein:
+ExecStart=/usr/bin/node /www/wwwroot/sonybox/server.js
+# Agar PHP 8.4 use karein (uncomment to use PHP):
+# ExecStart=/www/server/php/84/bin/php -S 127.0.0.1:22558 -t /www/wwwroot/sonybox /www/wwwroot/sonybox/router.php
+Restart=always
+RestartSec=3
+Environment=PORT=22558
+
+[Install]
+WantedBy=multi-user.target

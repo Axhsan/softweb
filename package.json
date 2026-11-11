@@ -1,0 +1,19 @@
+{
+  "name": "sonybox-isp",
+  "version": "1.0.0",
+  "description": "SonyBox ISP Management & Billing System",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "@netlify/blobs": "^8.1.0"
+  },
+  "keywords": [
+    "isp",
+    "billing",
+    "management"
+  ],
+  "author": "SonyBox",
+  "license": "ISC"
+}

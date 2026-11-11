@@ -1,0 +1,13 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+
+    # Route /api/* requests to api.php
+    RewriteRule ^api/(.*)$ api.php?route=$1 [QSA,L]
+</IfModule>
+
+# Prevent direct access to backup files and raw sensitive config if needed
+<Files "email_config.json">
+    Order allow,deny
+    Deny from all
+</Files>

@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 380 90" width="380" height="90" fill="none">
+  <defs>
+    <linearGradient id="logoBgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1E3A8A" />
+      <stop offset="50%" stop-color="#0284C7" />
+      <stop offset="100%" stop-color="#06B6D4" />
+    </linearGradient>
+    <linearGradient id="bCyanGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8" />
+      <stop offset="100%" stop-color="#34D399" />
+    </linearGradient>
+    <linearGradient id="textCyanGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#06B6D4" />
+      <stop offset="100%" stop-color="#38BDF8" />
+    </linearGradient>
+    <filter id="logoShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="#0284C7" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+
+  <!-- SB Monogram Icon -->
+  <g transform="translate(10, 10)">
+    <rect width="70" height="70" rx="18" fill="url(#logoBgGrad)" filter="url(#logoShadow)"/>
+    <rect x="0.5" y="0.5" width="69" height="69" rx="17.5" stroke="rgba(255,255,255,0.35)" stroke-width="1"/>
+    
+    <!-- Mini S & B -->
+    <g transform="translate(4, 2) scale(0.55)">
+      <!-- S -->
+      <path d="M 50 36 C 41 29, 27 29, 24 41 C 21 53, 51 53, 50 68 C 49 81, 35 83, 24 76" 
+            stroke="#FFFFFF" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+      <!-- B -->
+      <path d="M 58 83 L 58 33 L 74 33 C 84 33, 89 40, 89 47 C 89 54, 83 58, 73 58 L 58 58 M 72 58 L 78 58 C 88 58, 93 66, 93 74 C 93 83, 86 83, 58 83" 
+            stroke="url(#bCyanGrad)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+      <circle cx="50" cy="36" r="3.5" fill="#38BDF8" />
+      <circle cx="24" cy="76" r="3.5" fill="#34D399" />
+    </g>
+  </g>
+
+  <!-- Brand Typography -->
+  <g transform="translate(96, 52)">
+    <text font-family="'Plus Jakarta Sans', system-ui, -apple-system, sans-serif" 
+          font-size="34" font-weight="900" letter-spacing="-0.5" fill="#FFFFFF">Sony<tspan fill="url(#textCyanGrad)">Box</tspan></text>
+  </g>
+  <g transform="translate(98, 70)">
+    <text font-family="'Plus Jakarta Sans', system-ui, -apple-system, sans-serif" 
+          font-size="10" font-weight="700" letter-spacing="2.5" fill="#94A3B8">ISP BILLING &amp; MANAGEMENT</text>
+  </g>
+</svg>
